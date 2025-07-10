@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const tarefaController = require('../controllers/TarefaController');
+const tarefaController = require('../controllers/tarefaController');
+const authMiddleware = require('../middlewares/auth');
 
-router.post('/tarefas', tarefaController.criarTarefa);
-router.get('/tarefas', tarefaController.listarTarefas);
-router.put('/tarefas/:id', tarefaController.atualizarTarefa);
-router.delete('/tarefas/:id', tarefaController.deletarTarefa);
+router.post('/tarefas', authMiddleware, tarefaController.criarTarefa);
+router.get('/tarefas', authMiddleware, tarefaController.listarTarefas);
+router.put('/tarefas/:id', authMiddleware, tarefaController.atualizarTarefa);
+router.delete('/tarefas/:id', authMiddleware, tarefaController.deletarTarefa);
 
 module.exports = router;
