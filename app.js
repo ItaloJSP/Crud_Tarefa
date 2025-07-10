@@ -10,6 +10,11 @@ app.use(express.json());
 
 app.use('/api', tarefaRoutes);
 
+app.get('/', (req, res) => {
+  res.send('🚀 API do CRUD de Tarefas está online!');
+});
+
+
 sequelize.sync().then(() => {
   console.log('Banco sincronizado');
   app.listen(3000, () => console.log('Servidor rodando na porta 3000'));
