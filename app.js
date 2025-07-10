@@ -3,12 +3,15 @@ const cors = require('cors');
 const sequelize = require('./config/database');
 const tarefaRoutes = require('./routes/tarefaRoutes');
 const tarefa = require('./models/tarefa');
-
+const usuarioRoutes = require('./routes/usuarioRoutes');
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
 app.use('/api', tarefaRoutes);
+
+app.use('/api/usuarios', usuarioRoutes);
 
 app.get('/', (req, res) => {
   res.send('🚀 API do CRUD de Tarefas está online!');
