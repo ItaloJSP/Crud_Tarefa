@@ -1,17 +1,18 @@
-# 📝 CRUD de Tarefas
-
-Projeto de exemplo para praticar o desenvolvimento de uma API REST com Node.js, Express, Sequelize e PostgreSQL.
+# 📝 API CRUD de Tarefas com Autenticação
+Projeto API REST para gerenciar tarefas, usando Node.js, Express, Sequelize e PostgreSQL, com autenticação via JWT.
 
 ---
 
 ## 🚀 Objetivo
 
-Desenvolver uma API básica que permita:
+- Desenvolver uma API básica que permita:
 
-- ✅ Criar tarefas
-- 📄 Listar todas as tarefas
-- ✏️ Atualizar tarefas
-- 🗑️ Excluir tarefas
+- Permitir que usuários se cadastrem e façam login
+
+- Criar, listar, atualizar e deletar tarefas autenticado
+
+- Proteger rotas de tarefas com token JWT
+
 
 ---
 
@@ -21,21 +22,31 @@ Desenvolver uma API básica que permita:
 - **Express** — framework web
 - **Sequelize** — ORM para modelagem de banco de dados
 - **PostgreSQL** — banco de dados relacional
+- **bcrypt ** — hash para senhas
+- **jsonwebtoken ** — geração e validação de tokens JWT
 - **Cors** — para liberar acesso a partir do frontend
 
 ---
 
+## 📁 Estrutura do projeto
+
 crud-tarefas/
 ├── app.js
 ├── config/
-│ └── database.js
+│   └── database.js
 ├── controllers/
-│ └── tarefaController.js
+│   ├── tarefaController.js
+│   └── usuarioController.js
+├── middleware/
+│   └── auth.js
 ├── models/
-│ └── tarefa.js
+│   ├── tarefa.js
+│   └── usuario.js
 ├── routes/
-│ └── tarefaRoutes.js
+│   ├── tarefaRoutes.js
+│   └── usuarioRoutes.js
 ├── package.json
+
 
 ---
 
@@ -48,12 +59,10 @@ crud-tarefas/
 
 ## 🔥 Configurar o banco
 
-Edite o arquivo config/database.js com seu usuário, senha e nome do banco.
-Crie o banco no PostgreSQL:
+No arquivo config/database.js, configure a conexão com seu banco PostgreSQL, incluindo usuário, senha, host, porta e SSL se necessário (como no Railway).
 
-sql
-Copiar
-Editar
+Crie o banco (exemplo):
+
 CREATE DATABASE crud_tarefas;
 
 ## 🔥 Rodar a aplicação
@@ -64,39 +73,108 @@ A API ficará disponível em:
 
 http://localhost:3000/api
 
-## 🔥 Rotas da API
+## 🔐 Autenticação
 
-## ✅ CRIAR
+Cadastrar usuário
+- POST /api/usuarios/cadastrar
 
+Body (JSON):
+
+json
+Copiar
+Editar
+{
+  "nome": "Italo José",
+  "email": "italo@example.com",
+  "senha": "minhasenha123"
+}
+
+---
+
+Login
+POST /api/usuarios/login
+
+Body (JSON):
+
+json
+Copiar
+Editar
+{
+  "email": "italo@example.com",
+  "senha": "minhasenha123"
+}
+
+---
+
+## 📋 Rotas protegidas (necessitam do token JWT no header)
+
+Inclua no header da requisição:
+
+Authorization: Bearer SEU_TOKEN_AQUI
+
+---
+
+
+Criar tarefa
 POST /api/tarefas
 
 Body (JSON):
 
+json
+Copiar
+Editar
 {
   "titulo": "Estudar Node.js",
   "descricao": "Praticar conceitos de backend",
   "concluida": false
 }
 
-## 📄 LISTAR
+---
 
+Listar todas as tarefas
 GET /api/tarefas
 
-## ✏️ ATUALIZAR
+---
 
+Atualizar tarefa
 PUT /api/tarefas/:id
 
 Body (JSON):
 
+json
+Copiar
+Editar
 {
-  "titulo": "Estudar Node.js atualizado",
+  "titulo": "Estudar Node.js avançado",
   "descricao": "Finalizar exercícios",
   "concluida": true
 }
 
-## 🗑️ DELETAR
 
+---
+
+Deletar tarefa
 DELETE /api/tarefas/:id
+
+---
+
+
+## ⚠️ Erros comuns
+
+- 401 Unauthorized: Token ausente ou inválido nas rotas protegidas
+
+- 404 Not Found: Usuário ou tarefa não encontrada
+
+- 500 Internal Server Error: Erro inesperado no servidor
+
+---
+
+## 🛠️ Scripts disponíveis
+
+- npm run dev    # Rodar em modo desenvolvimento com nodemon
+
+- npm start      # Rodar aplicação normalmente
+
 
 ## 🔥 AUTOR 
 
