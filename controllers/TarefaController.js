@@ -1,5 +1,5 @@
 const Tarefa = require('../models/tarefa');
-const authMiddleware = require('../middlewares/auth');
+const authMiddleware = require('../middleware/auth');
 
 
 
