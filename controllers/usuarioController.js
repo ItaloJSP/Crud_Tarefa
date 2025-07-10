@@ -1,5 +1,7 @@
 const Usuario = require('../models/usuario');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 
 exports.cadastrar = async (req, res) => {
   try {
@@ -31,6 +33,15 @@ exports.login = async (req, res) => {
     if (!valid) {
       return res.status(401).json({ error: 'Senha incorreta' });
     }
+
+    
+    // Gerar token
+    const token = jwt.sign(
+      { id: usuario.id, email: usuario.email, tipo: usuario.tipo },
+      'secreto123', 
+      { expiresIn: '1h' }
+    );
+
 
     res.json({ mensagem: 'Login realizado com sucesso', usuario });
   } catch (error) {
